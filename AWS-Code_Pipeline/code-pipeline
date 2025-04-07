@@ -1,3 +1,7 @@
 In code build settings, there is Environ ment setting.
   That is AWS managed environment, which provide the platform to build your code.
   Just like in Jenkins we configure worker node, same concept use in aws code build environment settings
+
+code build errors:
+can not connect to docker daemon
+solution-->go to environment settings--> override image option-->Privileged-->enable tis flag if yo want to build docker images or want your builds to get levated priileges
