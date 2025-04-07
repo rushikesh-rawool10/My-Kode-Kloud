@@ -1,0 +1,3 @@
+In code build settings, there is Environ ment setting.
+  That is AWS managed environment, which provide the platform to build your code.
+  Just like in Jenkins we configure worker node, same concept use in aws code build environment settings
