@@ -4,4 +4,6 @@ In code build settings, there is Environ ment setting.
 
 code build errors:
 can not connect to docker daemon
-solution-->go to environment settings--> override image option-->Privileged-->enable tis flag if yo want to build docker images or want your builds to get levated priileges
+solution-->go to environment settings--> override image option-->Privileged-->enable this flag if you want to build docker images or want your builds to get elevated privileges
+roles--> ssm access 
+create role for code build, it will provide you all required privileges
