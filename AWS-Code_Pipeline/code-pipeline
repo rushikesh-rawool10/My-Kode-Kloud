@@ -11,4 +11,7 @@ create role for code build, it will provide you all required privileges.
 ===========================================================
 deploy an app on ec2 using code deploy
 
-ec2 needs to talk with code deploy and vice versa, so that both services should have access to each other for that create a role and give permissions
+ec2 needs to talk with code deploy and vice versa, so that both services should have access to each other for that create a role and give permissions.
+
+ deployment group name--
+same like ec2 target group. to know which ec2 instance/instance group name code deploy should deploy the code.
