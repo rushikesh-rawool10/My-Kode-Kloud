@@ -6,4 +6,9 @@ code build errors:
 can not connect to docker daemon
 solution-->go to environment settings--> override image option-->Privileged-->enable this flag if you want to build docker images or want your builds to get elevated privileges
 roles--> ssm access 
-create role for code build, it will provide you all required privileges
+create role for code build, it will provide you all required privileges.
+
+===========================================================
+deploy an app on ec2 using code deploy
+
+ec2 needs to talk with code deploy and vice versa, so that both services should have access to each other for that create a role and give permissions
