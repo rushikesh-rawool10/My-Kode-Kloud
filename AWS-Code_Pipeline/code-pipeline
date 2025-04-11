@@ -15,3 +15,15 @@ ec2 needs to talk with code deploy and vice versa, so that both services should 
 
  deployment group name--
 same like ec2 target group. to know which ec2 instance/instance group name code deploy should deploy the code.
+
+=====================================================================================
+
+in code deploy
+
+in stop_container.sh script
+
+#!bin/bash
+
+set -e
+
+docker ps | awk F " " '{print $1}'
