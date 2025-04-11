@@ -27,4 +27,4 @@ in stop_container.sh script
 set -e
 
 containerID=docker ps | awk F " " '{print $1}'
-docker rm $containerID
+docker rm -f$containerID
