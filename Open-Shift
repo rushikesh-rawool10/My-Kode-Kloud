@@ -15,4 +15,6 @@ in service, we can change, spec:-> replica: service_name
 
 4. Canary Deployment.
 
-few set of users allow to use V2 and continuous testing
+few set of users allow to use V2 and continuous testing.
+
+we can create 2 deployments and gradually change replica counts of each
