@@ -7,3 +7,12 @@ it can be in numbers also instead of a percentage.
 2. recreate
 all pods killed and newly created
 usecase: development(instant kill and redeploy )
+
+3. Blue Green
+2 sets of pods blue and green, running simultaneously
+in service, we can change, spec:-> replica: service_name
+
+
+4. Canary Deployment.
+
+few set of users allow to use V2 and continuous testing
