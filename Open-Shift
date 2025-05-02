@@ -1,0 +1,5 @@
+Deployment Strategy
+1. rolling update (by default)
+    max unavailable: 25% (if 4 then 1 can go down at a time)
+    max surge : 25% (if 4 then only 1 max pod create above desired state)
+it can be in numbers also instead of percentage
