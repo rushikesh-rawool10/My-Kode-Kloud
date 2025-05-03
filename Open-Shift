@@ -18,3 +18,8 @@ in service, we can change, spec:-> replica: service_name
 few set of users allow to use V2 and continuous testing.
 
 we can create 2 deployments and gradually change replica counts of each
+
+
+---------------------catelog and template in Open Shift------------
+
+oc create -f template-config.yml
