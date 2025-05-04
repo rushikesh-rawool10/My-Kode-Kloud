@@ -1,0 +1,6 @@
+which order ansible will consider cfg file
+1. environment variable
+2. current directory
+3. home directory
+
+default loc --  /etc/ansible/ansible.cfg
