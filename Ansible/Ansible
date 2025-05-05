@@ -4,3 +4,17 @@ which order ansible will consider cfg file
 3. home directory
 
 default loc --  /etc/ansible/ansible.cfg
+
+======================variables====================
+
+string
+number
+boolean
+list
+dictionary--> {{user.name}} {{user.password}}
+
+================variable precedance===========
+
+group
+host
+
