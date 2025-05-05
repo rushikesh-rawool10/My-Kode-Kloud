@@ -53,16 +53,14 @@ cat playbook.yaml
 
 -----------------------------------------------------
 
-cat playbook.yaml
+cat app_install.yaml
 ---
-- hosts: localhost
-
-  vars:
-    car_model: 'BMW M3'
-    country_name: USA
-    title: 'Systems Engineer'
-
+- hosts: all
+  become: yes
   tasks:
-    - command: 'echo "My car is {{car_model}}"'
-    - command: 'echo "I live in the {{country_name}}"'
-    - command: 'echo "I work as a {{title}}"'
+    - name: Install applications
+      yum:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - "{{ app_list }}"
