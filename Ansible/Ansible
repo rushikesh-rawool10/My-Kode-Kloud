@@ -17,4 +17,5 @@ dictionary--> {{user.name}} {{user.password}}
 
 group
 host
+play
 
