@@ -64,3 +64,17 @@ cat app_install.yaml
         state: present
       with_items:
         - "{{ app_list }}"
+
+
+-----------------------------user_setup.yaml
+
+
+- hosts: all
+  become: yes
+  tasks:
+    - name: Set up user
+      user:
+        name: "{{ user_details.username }}"
+        password: "{{ user_details.password }}"
+        comment: "{{ user_details.email }}"
+        state: present
