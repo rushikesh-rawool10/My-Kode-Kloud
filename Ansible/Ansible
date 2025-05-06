@@ -78,3 +78,16 @@ cat app_install.yaml
         password: "{{ user_details.password }}"
         comment: "{{ user_details.email }}"
         state: present
+
+=================================================================================
+
+Modules
+
+command
+script
+yum:
+  name
+  state
+service:
+  name
+  state
