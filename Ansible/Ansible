@@ -85,16 +85,6 @@ Register
 when we want to result one task into another, use Regisger
 =================================================================================
 
-Modules
-
-command
-script
-yum:
-  name
-  state
-service:
-  name
-  state
 ================================================================================
 ansible-playbook playbook.yml
 ==========================================================================
@@ -172,3 +162,13 @@ name: nginx
 state: present
 when: ansible_os_family "RedHat" or
 ansible_os_family == "SUSE"
+
+=============================================Modules==========
+
+system
+command
+files
+database
+cloud 
+windows
+more...
