@@ -91,3 +91,29 @@ yum:
 service:
   name
   state
+================================================================================
+ansible-playbook playbook.yml
+==========================================================================
+
+verify playbooks
+
+ansible-playbook playbook.yml --check
+
+check and diff--------------
+
+
+hosts: webservers
+tasks:
+name: Ensure the configuration line is present lineinfile:
+path: /etc/nginx/nginx.conf
+line: 'client_max_body_size 100M; '
+become: yes
+
+ansible-playbook configuration.yml --check --diff
+
+
+-----------syntax check-------------
+
+ansible-playbook playbook.yml --syntax-check
+
+
