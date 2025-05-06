@@ -80,6 +80,10 @@ cat app_install.yaml
         state: present
 
 =================================================================================
+Register
+
+when we want to result one task into another, use Regisger
+=================================================================================
 
 Modules
 
