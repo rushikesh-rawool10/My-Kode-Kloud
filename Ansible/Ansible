@@ -116,4 +116,36 @@ ansible-playbook configuration.yml --check --diff
 
 ansible-playbook playbook.yml --syntax-check
 
+===================linting================
+
+ansible-lint example.yml
+
+===============================
+
+---
+- name: 'Execute a command to display hosts file on localhost'
+  hosts: localhost
+  become: yes
+  tasks:
+     - name: 'Task to display hosts file'
+       command: 'cat /etc/hosts'
+
+====================================================================
+
+---
+- name: 'Execute two commands on node01'
+  hosts: node01
+  become: yes
+  tasks:
+    - name: 'Execute a date command'
+      command: date
+    - name: 'Task to display hosts file on node01'
+      command: 'cat /etc/hosts'
+- name: 'Execute a command on node02'
+  hosts: node02
+  become: yes
+  tasks:
+     - name: 'Task to display hosts file on node02'
+       command: 'cat /etc/hosts'
+
 
