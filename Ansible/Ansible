@@ -263,4 +263,19 @@ Then add a conditional to the second task to check if the output already contain
    tasks:
      - command: 'echo "{{ item }}"'
        with_items: '{{ fruits }}'
+-------------------------------------------------------------
 
+---
+- name: 'Install required packages'
+  hosts: localhost
+  become: yes
+  vars:
+    packages:
+      - httpd
+      - make
+      - vim
+  tasks:
+    - yum:
+        name: '{{ item }}'
+        state: present
+      with_items: '{{ packages }}'
