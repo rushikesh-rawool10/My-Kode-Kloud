@@ -248,3 +248,19 @@ Then add a conditional to the second task to check if the output already contain
     - shell: 'echo "nameserver 10.0.250.10" >> /etc/resolv.conf'
       when: 'command_output.stdout.find("10.0.250.10") == -1'
 
+============================WITH========================================
+
+
+---
+-  name: 'Print list of fruits'
+   hosts: localhost
+   vars:
+     fruits:
+       - Apple
+       - Banana
+       - Grapes
+       - Orange
+   tasks:
+     - command: 'echo "{{ item }}"'
+       with_items: '{{ fruits }}'
+
