@@ -23,3 +23,9 @@ but if we want to create new file before destrying existing then use lifecycle r
 lifecycle{
 create_before_destroy=true
 }
+
+
+----------------
+lifecycle{
+prevent_destroy = true
+}
