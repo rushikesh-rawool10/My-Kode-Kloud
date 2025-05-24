@@ -38,4 +38,12 @@ ignore_changes = [
 ]
 }
 
+=====================data source=================
+a file on which terraform does not have control of
+
+only reads infrastructure, do not create, destroy, update
+
+data "local_file" "dog"{
+filename = "/root/dog.txt"
+}
 
