@@ -11,3 +11,15 @@ prefix = var.prefix
 separator= var.separator
 length= var.length
 }
+
+
+===================life cycle rules=============
+by default, destroy old file and create
+
+but if we want to create new file before destrying existing then use lifecycle rule,
+ inside resource block,
+
+
+lifecycle{
+create_before_destroy=true
+}
