@@ -47,3 +47,21 @@ data "local_file" "dog"{
 filename = "/root/dog.txt"
 }
 
+
+
+=========================================
+
+count meta-argument to loop through the project-sapphire-users variable and create all the users in the list.
+
+
+You may want to make use of the length function to get the length of the list.
+
+
+sol:
+
+resource "aws_iam_user" "users" {
+     name = var.project-sapphire-users[count.index]
+     count = length(var.project-sapphire-users)
+}
+
+first length will count then , this length will be used in name 
