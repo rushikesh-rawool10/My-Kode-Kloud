@@ -120,3 +120,14 @@ resource "aws_dynamodb_table_item" "upload" {
 }
 EOF
 }
+
+
+====================terraform s3 as backend=====
+
+terraform {
+  backend "s3" {
+    key = "terraform.tfstate"
+    region = "us-east-1"
+    bucket = "remote-state"
+}
+}
