@@ -1,0 +1,4 @@
+info
+You can list the changed files as well using the --name-only option with the git log command
+
+Run the command git log --name-only
