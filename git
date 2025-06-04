@@ -21,3 +21,18 @@ Syntax: git merge <other-branch>
 git merge origin/master
 ---------
 git pull origin master
+
+------------------------merge conflicts--------------
+Two users max and Sarah working on the same code with 2 different files with same name. sarah wrote first and pushed to remote.
+Now Max has written the code and tries to do git push origin master, he will get error that, remote contains work that you do
+not have locally. 
+push rejected!
+we need to pull fist
+git pull origin master
+pull means fetch+merge, so when git tries to do merge, it ill get merge conflicts!
+to see who did it remotely, git log origin/master
+
+open the file and correct the code
+then git add and git merge,
+
+
