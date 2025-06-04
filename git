@@ -2,3 +2,22 @@ info
 You can list the changed files as well using the --name-only option with the git log command
 
 Run the command git log --name-only
+
+To view all the branches- both local and remote - run the git branch -a command.
+
+The remote branches have the prefix remotes
+
+git fetch -- to pull all changes from remote repo to local
+bu in pull we need fetch + merge
+while in pull fetch + merge in one single command
+
+
+----------------
+Now that we’ve fetched the origin master branch, we can update our local master branch with the latest changes made on origin/master branch.
+Merge the remote master branch to local master
+
+
+Syntax: git merge <other-branch>
+git merge origin/master
+---------
+git pull origin master
