@@ -70,3 +70,29 @@ git reset
 git reset --hard Head ~1   (do not keep changes)
 
 
+================================stash================================
+
+git stash
+
+git pop
+
+git stash list
+git stash show stash@{1}   --to show the content
+
+git stash pop stash@{1}
+
+
+=====================git reflog======
+to undo hard reset
+
+git reflog will show the current git status with hard reset done.
+
+git reset --hard 8ad5  (commit id of safe changes before hard reset)
+
+git log only shows commit history
+git reflog shows state of repository
+
+
+
+
+
