@@ -36,3 +36,37 @@ open the file and correct the code
 then git add and git merge,
 
 
+=========================================Rebase====
+sarah is writing own story in own branch, meanwhile her teammates continuously added stories and contributing to master branch.
+sarah wants all the updates from master to her own branch.
+if we merge master into her own branch, a new commit will get added.
+another way is to rebase.
+
+git rebase master (in sarah own branch)
+this will keep sarah branch on the top of master
+
+-------------interactive rebasing
+
+modifying git history
+
+
+
+she does not want multiple commits for the same story. She would like to squash all the commits into a single commit.
+
+
+Run the command git rebase -i HEAD~3 to squash the last 3 commits into 1.
+
+In the editor that opens, leave the first line as is, and change the second and third lines to use squash instead of pick. Then save the file. This way we pick the first commit and then squash the second and third commits to it.
+
+In the next editor window that opens set the commit message to Add hare-and-tortoise story and save it.
+
+=====================================revert and reset================
+
+git revert will add new commit
+It is useful when we want to undo changes and keep those changes in git history
+
+git reset 
+ git reset --soft Head ~1  (keep changes)
+git reset --hard Head ~1   (do not keep changes)
+
+
