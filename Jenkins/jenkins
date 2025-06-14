@@ -204,3 +204,75 @@ pipeline {
         }
     }
 }
+
+--------------
+Tool type "maven" does not have an install of "maven-398" configured - did you mean "null"? @ line 5, column 15.
+           maven "maven-398"
+                 ^
+
+---
+Click on Manage Jenkins from the Jenkins dashboard.
+Scroll down to System Configuration and click on Tools.
+Scroll down to Maven installations and click on Add Maven.
+Under Name, enter maven-398. Check Install automatically, and, under Install from Apache, select version 3.9.8.
+Click on Apply and then Save.
+Go to the lab2-java-hello-world job dashboard and click on Build Now. Wait for some time for the build to complete and you should see it fail.
+Click on your build number, and then on Pipeline Overview.
+
+=====================
+Steps for archiving JUnit-formatted test result
+
+First, install the JUnit plugin. From the Jenkins dashboard, go to Manage Jenkins->Plugins->Available Plugins and search for JUnit.
+Click on Install and then restart Jenkins.
+Now, go to Pipeline Syntax->Snippet Generator on the job dashboard, and, under Sample Step, select junit: Archive JUnit-formatted test results. Then enter target/surefire-reports/TEST-*.xml under Test report XMLs and click on Generate Pipeline Script button at the bottom of the page.
+You should see an output like this:
+junit 'target/surefire-reports/TEST-*.xml'
+NOTE: The JUnit syntax may vary, but it will archive the tests. Copy it.
+
+Now, in your terminal, again open the Jenkinsfile again for editing in the jenkins-hello-world repository. To the Unit Test stage, add the command that we copied from the pipeline syntax generator:
+stage('Unit Test') {
+            steps {
+                sh "mvn test"
+                junit stdioRetention: '', testResults: 'target/surefire-reports/TEST-*.xml'
+            }
+        }
+
+
+-------------------------------
+The Jenkinsfile within jenkins-hello-world repo has been updated. Please have a look.
+
+In this task, we will make use of the Build Parameters to replace the Application Port and Sleep time within the Integration testing stage.
+
+Go back to the lab2-java-hello-world project in Jenkins and parameterize it with the below data:
+
+Add a string parameter:
+
+Name: APPLICATION_PORT
+Default Value: 6767
+Description: Application port on which integration tests should happen
+Add a choice parameter:
+
+Name: SLEEP_TIMER
+Choices:
+5s
+10s
+20s
+40s
+60s
+Description: Time to sleep before initiating integration tests
+Update the Jenkinsfile within jenkins-hello-world repo to replace the sleep time and port number in the Integration testing stage with the above parameters.
+
+Commit the changes to the repository. Then, manually build the lab2-java-hello-world project with parameters.
+
+
+The build should pass. Check out the logs.
+
+
+
+----
+stage('Integration Testing') {
+    steps {
+        sh "sleep ${params.SLEEP_TIMER}"
+        sh """ curl -s http://localhost:${params.APPLICATION_PORT}/hello | grep -i "Hello, KodeKloud community!" """
+    }
+}
