@@ -1,0 +1,51 @@
+Steps to Create an Ignore File for OWASP ZAP Warnings
+Switch to the feature Branch:
+Ensure you are on the feature/enabling-cicd branch.
+   git checkout feature/enabling-cicd
+Create the Ignore File:
+At the root of the repository, create a new file named zap_ignore_rules using the VI editor:
+   vi zap_ignore_rules
+Add Warning IDs to the File:
+Enter the following content in zap_ignore_rules with the actual warning IDs and your Kubernetes IP k8:30000:
+100001  IGNORE  http://k8:30000
+10020   IGNORE  http://k8:30000
+10021   IGNORE  http://k8:30000
+10037   IGNORE  http://k8:30000
+10038   IGNORE  http://k8:30000
+10063   IGNORE  http://k8:30000
+10098   IGNORE  http://k8:30000
+90003   IGNORE  http://k8:30000
+Note: Use TABs between columns instead of spaces.
+Edit the Jenkinsfile:
+
+Open the Jenkinsfile and locate the docker command within the DAST - OWASP ZAP stage.
+Add the -c zap_ignore_rules argument to the command to make use of the ignore file:
+ docker run -v $(pwd):/zap/wrk/:rw ghcr.io/zaproxy/zaproxy zap-api-scan.py \
+   -t k8:30000/api-docs/ \
+   -f openapi \
+   -r zap_report.html \
+   -w zap_report.md \
+   -J zap_json_report.json \
+   -c zap_ignore_rules
+Commit and Push the Changes:
+
+Save the zap_ignore_rules file and commit your changes.
+   git add zap_ignore_rules Jenkinsfile
+   git commit -m "Add ignore rules for OWASP ZAP warnings"
+   git push origin feature/enabling-cicd
+Verify the Pipeline:
+Trigger the Jenkins pipeline. It should complete successfully, with the warnings specified in zap_ignore_rules being ignored in the DAST - OWASP ZAP stage.
+Example Output of OWASP ZAP API Scan (for Reference)
+Total URLs Scanned: 15
+PASS: 105 checks
+WARN-NEW: 8 warnings (e.g., Unexpected Content-Type, Missing Anti-clickjacking Header, etc.)
+Example Warning IDs to Ignore:
+100001: Unexpected Content-Type was returned
+10020: Missing Anti-clickjacking Header
+10021: X-Content-Type-Options Header Missing
+10037: Server Leaks Information via "X-Powered-By" Header
+10038: Content Security Policy (CSP) Header Not Set
+10063: Permissions Policy Header Not Set
+10098: Cross-Domain Misconfiguration
+90003: Sub Resource Integrity Attribute Missing
+Following these steps should ensure that the warnings are ignored, allowing the pipeline to complete successfully.
