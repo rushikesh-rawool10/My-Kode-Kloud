@@ -1,0 +1,107 @@
+Step 3: Login to ArgoCD via UI
+Go to the ArgoCD web interface.
+Use the following credentials:
+Username: admin
+Password: Run the following command to fetch the password:
+cat /root/lab-data/argocd-password
+Step 4: Create an ArgoCD Application
+In the UI, create a new application with the following details:
+App Name: solar-system-app
+Project: default
+Sync Policy: Manual
+Sync Options: ENABLE Auto-create Namespace
+Repo URL: Go to the Gitea UI and retrieve the URL
+Revision: main
+Path: ./kubernetes
+Cluster: https://kubernetes.default.svc
+Namespace: solar-system
+Save the application.
+Step 5: Sync the Application Manually
+After saving, manually sync the application from the ArgoCD interface.
+Step 6: Verify Sync Status
+The sync will succeed, but the ArgoCD app status will be degraded because the Docker image may not be available at your DockerHub.
+
+================================================================================================
+Step 1: Generate a Gitea Token
+Generate a Gitea token from the Gitea UI:
+Go to User profile (top-right) -> Settings -> Applications.
+Token name: Jenkins-Token
+Select permission: Repository Read and Write
+Copy the generated token for future use.
+Step 2: Create Jenkins Global Credentials
+In Jenkins, create new Global Credentials:
+Kind: Secret text
+Scope: Global
+Secret: Paste the token you generated from Gitea
+ID: gitea-api-token
+Step 3: Update Jenkinsfile
+In the Jenkinsfile, add the gitea-api-token as a global environment variable:
+GITEA_TOKEN = credentials('gitea-api-token')
+Add the following two stages in Jenkins after Integration Testing - VM stage. Replace the *docker image name.
+stage('Update and Commit Image Tag') {
+    when  {
+            branch 'PR*'
+          }
+    steps {
+        sh 'git clone -b main http://git-server:5555/dasher-org/solar-system-gitops-argocd'
+        dir("solar-system-gitops-argocd/kubernetes") {
+            sh '''
+                git checkout main
+                git checkout -b feature-$BUILD_ID
+                sed -i "s#kodekloud-hub:5000.*#kodekloud-hub:5000/solar-system:$GIT_COMMIT#g" deployment.yml
+                cat deployment.yml
+                git config user.name "Jenkins CI"
+                git config --global user.email "jenkins@dasher.com"
+                git remote set-url origin http://$GITEA_TOKEN@git-server:5555/dasher-org/solar-system-gitops-argocd
+                git add .
+                git commit -am "Updated docker image"
+                git push -u origin feature-$BUILD_ID
+            '''
+        }
+    }
+}
+stage('Kubernetes Deployment - Raise PR') {
+    when  {
+            branch 'PR*'
+           }
+    steps {
+        sh """
+          curl -X 'POST' \
+            'http://git-server:5555/api/v1/repos/dasher-org/solar-system-gitops-argocd/pulls' \
+            -H 'accept: application/json' \
+            -H 'Authorization: token $GITEA_TOKEN' \
+            -H 'Content-Type: application/json' \
+            -d '{
+            "assignee": "gitea-admin",
+            "assignees": [
+              "gitea-admin"
+            ],
+            "base": "main",
+            "body": "Updated docker image in deployment manifest",
+            "head": "feature-$BUILD_ID",
+            "title": "Updated Docker Image"
+          }'
+        """
+    }
+}
+Add the contents of /root/lab-data/q11-data-2.txt at the top of the post always section:
+script {
+            if (fileExists('solar-system-gitops-argocd')) {
+            sh 'rm -rf solar-system-gitops-argocd'
+            }
+        }
+Step 4: Commit Changes and Open a PR
+Commit the changes to the Jenkinsfile in the feature/enabling-cicd branch.
+Open a Pull Request from the feature/enabling-cicd branch to the main branch.
+Once the PR is opened, Jenkins will trigger the pipeline.
+NOTE: Do not merge or close the PR in the solar-system repository.
+
+Step 5: Accept and Merge the PR
+Switch to Gitea, go to the solar-system-gitops-argocd repository.
+Notice the Pull Request.
+Accept and merge it.
+Step 6: Sync the Application in ArgoCD
+Switch to the ArgoCD UI.
+Refresh the solar-system-app.
+Manually sync the application.
+Check the Kubernetes app on port 30000.
