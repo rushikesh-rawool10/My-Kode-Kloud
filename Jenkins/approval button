@@ -1,0 +1,24 @@
+Wrap the Input Prompt within a timeout block set for 1 DAY.
+
+Example syntax to add in the Jenkinsfile:
+ stage('Deploy to Prod?') {
+  when {
+    branch 'main'
+        }
+  steps {
+    timeout(time: 1, unit: 'DAYS') {
+      input message: 'Is the PR Merged and ArgoCD Synced?', ok: 'YES! PR is Merged and ArgoCD Application is Synced', submitter: 'admin'
+    }
+  }
+  }
+Commit the Changes to the repository.
+
+   git add Jenkinsfile
+   git commit -m "Add Deploy to Prod? stage with input directive"
+   git push origin feature/enabling-cicd
+Merge the PR to the main branch.
+
+Verify the Pipeline Execution:
+
+Trigger the Jenkins pipeline.
+The pipeline should await input at the Deploy to Prod? stage.
