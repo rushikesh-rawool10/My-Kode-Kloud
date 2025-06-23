@@ -1,0 +1,78 @@
+pipeline {
+  agent any
+
+  tools {
+    nodejs 'nodejs-22-6-0'
+  }
+
+  environment {
+    MONGO_URI = 'mongodb+srv://supercluster.d83jj.mongodb.net/superData'
+    MONGO_USERNAME = credentials('mongo-db-username')
+    MONGO_PASSWORD = credentials('mongo-db-password')
+  }
+
+  stages {
+    stage('Install Dependencies') {
+      steps {
+        sh 'npm install --no-audit'
+      }
+    }
+
+    stage('NPM Dependency Audit') {
+      steps {
+        sh 'npm audit --audit-level=critical'
+      }
+    }
+
+    stage('Unit Testing') {
+      steps {
+        sh 'npm test'
+      }
+    }
+
+    stage('Code Coverage') {
+      steps {
+        catchError(buildResult: 'SUCCESS', message: 'Oops! it will be fixed in future releases', stageResult: 'UNSTABLE') {
+          sh 'npm run coverage'
+        }
+      }
+    }
+
+    // **New Stage: Build Docker Image**
+    stage('Build Docker Image') {
+      steps {
+        script {
+          // Build Docker image with Git commit hash as the tag
+          sh 'docker build -t kodekloud-hub:5000/solar-system:${GIT_COMMIT} .'
+        }
+      }
+    }
+
+    // **New Stage: Trivy Scan**
+    stage('Trivy Scan') {
+      steps {
+        script {
+          // **Trivy** scan for **high** and **critical vulnerabilities**
+          sh '''
+          trivy image kodekloud-hub:5000/solar-system:${GIT_COMMIT} \
+          --severity HIGH,CRITICAL \
+          --exit-code 1 \
+          --format json -o trivy-image-CRITICAL-results.json
+          '''
+        }
+      }
+    }
+  }
+
+  post {
+    always {
+      junit allowEmptyResults: true, stdioRetention: '', testResults: 'test-results.xml'
+
+      publishHTML([allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: 'coverage/lcov-report', reportFiles: 'index.html', reportName: 'Code Coverage HTML Report', reportTitles: '', useWrapperFileDirectly: true])
+
+      // **Publish Trivy Scan Report**
+      sh 'trivy convert --format template --template /usr/local/share/trivy/templates/html.tpl --output trivy-image-CRITICAL-results.html trivy-image-CRITICAL-results.json'
+      publishHTML([allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: "./", reportFiles: "trivy-image-CRITICAL-results.html", reportName: "Trivy Image Critical Vul Report", reportTitles: "", useWrapperFileDirectly: true])
+    }
+  }
+}
