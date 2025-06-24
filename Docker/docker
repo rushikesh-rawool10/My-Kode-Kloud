@@ -74,4 +74,11 @@ Docker CLI
 
 
 ---------
-docker run -d --name mysql-db -e MYSQL_ROOT_PASSWORD=db_pass123 mysql
+docker run -d --name mysql-db -e MYSQL_ROOT_PASSWORD=db_pass123 MySQL
+
+---------------
+docker run -v /opt/data:/var/lib/mysql -d --name mysql-db -e MYSQL_ROOT_PASSWORD=db_pass123 MySQL
+============
+docker network ls
+
+
