@@ -16,3 +16,13 @@ To remove all the stopped containers at once, run the command: docker rm $(docke
         What is the base Operating System used by the python:3.6 image?
 If required, run an instance of the image to figure it out
   docker run python:3.6 cat /etc/*release*
+
+
+--------------to check the environmental variable of a running container
+docker inspect container_name
+
+--------------
+
+docker run -d -e MYSQL_ROOT_PASSWORD=db_pass123 --name mysql-db MySQL
+To know the env field from within a mysql-db container, run docker exec -it mysql-db env
+
