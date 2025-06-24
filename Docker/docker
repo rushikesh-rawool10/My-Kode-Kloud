@@ -29,3 +29,20 @@ To know the env field from within a mysql-db container, run docker exec -it mysq
 ---------
 docker run -d  ubuntu sleep 1000
 
+
+---------------enteypoint vs command-----
+from ubuntu
+
+ enrtypoint["sleep"]
+
+cmd["5"]
+
+--> command at startup: sleep 5
+
+------
+ at runtime
+
+docker run --entrypoint sleep2.0 ubuntu-sleeper 10
+
+Command at startup: sleep2.0 10
+
