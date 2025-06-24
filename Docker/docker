@@ -1,0 +1,18 @@
+To stop all the containers at once, run the command: docker stop $(docker ps -aq)
+
+To remove all the stopped containers at once, run the command: docker rm $(docker ps -aq)
+
+  to delete images
+  docker rmi ubuntu
+
+  docker run -d --name webapp nginx:1.14-alpine
+
+    Then run the command to delete all the available images: docker rmi $(docker images -aq)
+
+
+      Run an instance of kodekloud/simple-webapp with a tag blue and map port 8080 on the container to 38282 on the host.
+      Run the command: docker run -p 38282:8080 kodekloud/simple-webapp:blue
+
+        What is the base Operating System used by the python:3.6 image?
+If required, run an instance of the image to figure it out
+  docker run python:3.6 cat /etc/*release*
