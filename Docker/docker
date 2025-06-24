@@ -46,3 +46,19 @@ docker run --entrypoint sleep2.0 ubuntu-sleeper 10
 
 Command at startup: sleep2.0 10
 
+---------------------
+
+Next, create a simple container called clickcounter with the image kodekloud/click-counter, link it to the redis container that we created in the previous task and then expose it on the host port 8085
+
+docker run -d --name=clickcounter --link redis:redis -p 8085:5000 kodekloud/click-counter
+
+===================docker compose=========
+
+services:
+  redis:
+    image: redis:alpine
+  clickcounter:
+    image: kodekloud/click-counter
+    ports:
+    - 8085:5000
+version: '3.8'
