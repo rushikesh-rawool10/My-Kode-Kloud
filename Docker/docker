@@ -62,3 +62,16 @@ services:
     ports:
     - 8085:5000
 version: '3.8'
+
+====================================architecture====
+
+docker engine has 3 main components:
+
+docker daemon
+REST API server
+Docker CLI
+
+
+
+---------
+docker run -d --name mysql-db -e MYSQL_ROOT_PASSWORD=db_pass123 mysql
