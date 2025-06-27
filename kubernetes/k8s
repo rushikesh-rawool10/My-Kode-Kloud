@@ -26,5 +26,8 @@ kubectl rollout undo deployment/my-app-deployment
 kubectl edit deployment my-app-deployment
 edit the image and save it, immediately changes will take place.
 
+=========================================================
+kubectl run redis --image=redis -n finance
+
 
 
