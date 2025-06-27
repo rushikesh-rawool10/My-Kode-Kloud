@@ -29,5 +29,26 @@ edit the image and save it, immediately changes will take place.
 =========================================================
 kubectl run redis --image=redis -n finance
 
+kubectl get pods --all-namespaces | grep blue
+
+-------------------''
+
+kubectl get pods --namespace kube-system
+
+---------------------------
+
+---if no scheduler present, manually schedule on a node...
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+spec:
+  nodeName: controlplane
+  containers:
+  -  image: nginx
+     name: nginx
+
+==================================
+kubectl get pods --selector env=dev
 
 
