@@ -70,3 +70,10 @@ spec:
 
 conclusion: accept the pods which have certain tolerations
 
+kubectl describe node node01 | grep -i taints
+
+kubectl describe node controlplane
+
+kubectl taint nodes controlplane node-role.kubernetes.io/control-plane:NoSchedule-
+end the end the minus sign is to remove taint
+
