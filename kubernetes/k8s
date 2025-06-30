@@ -43,7 +43,7 @@ kind: Pod
 metadata:
   name: nginx
 spec:
-  nodeName: controlplane
+  nodeName: controlplane or any node name
   containers:
   -  image: nginx
      name: nginx
