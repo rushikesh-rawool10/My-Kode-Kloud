@@ -55,4 +55,18 @@ kubectl get all --selector env=prod
 
 kubectl get all --selector env=prod,bu=finance,tier=frontend 
 
+======================node taints=============
+
+kubectl taint nodes node1 app=blue:NoSchedule
+
+tolerations need to be added to pods:
+
+spec:
+ tolerations"
+  - key:"app"
+    operator:"equal"
+    value:"blue"
+    effect:"NoSchedule"
+
+conclusion: accept the pods which have certain tolerations
 
