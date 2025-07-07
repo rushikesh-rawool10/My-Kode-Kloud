@@ -1,0 +1,11 @@
+===============HPA & VPA=========
+manual way , manually need to monitor resources and then scle up and down accordingly
+kubectl scale deployment flask-web-app --replicas=3
+
+HPA-->automatically done as per condition given
+kubeclt scale deployment my-app --cpu-percent=50 --min=1 --max=10
+
+kubectl get hpa
+hpa comes as a default with k8s where vpa doesn't.
+
+HPA definition file, yml file
