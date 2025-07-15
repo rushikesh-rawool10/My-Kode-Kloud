@@ -45,3 +45,7 @@ spec:
  kubectl events hpa nginx-deployment | grep -i "ScalingReplicaSet"
 
 kubectl events hpa nginx-deployment | grep -i "FailedGetResourceMetric"
+
+--------
+kubectl top pod my-pod
+cpu and memory details
