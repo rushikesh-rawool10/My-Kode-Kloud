@@ -9,3 +9,39 @@ kubectl get hpa
 hpa comes as a default with k8s where vpa doesn't.
 
 HPA definition file, yml file
+
+If the status of the Horizontal Pod Autoscaler (HPA) target is <UNKNOWN>/80, it typically means that the HPA is unable to retrieve the current metrics for the specified target. Run kubectl describe hpa nginx-deployment to find more details.
+
+====deployment==
+controlplane ~ ➜  cat deployment.yml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    app: nginx
+spec:
+  replicas: 7
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.14.2
+        ports:
+        - containerPort: 80
+        resources:
+         requests:
+           cpu: 100m
+         limits:
+           cpu: 200m
+--------------
+
+ kubectl events hpa nginx-deployment | grep -i "ScalingReplicaSet"
+
+kubectl events hpa nginx-deployment | grep -i "FailedGetResourceMetric"
