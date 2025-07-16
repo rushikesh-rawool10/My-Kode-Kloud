@@ -137,5 +137,43 @@ roleRef:
   name: developer
   apiGroup: rbac.authorization.k8s.io
 
+============================================================================
+
+Edit the developer role in the blue namespace to add a new rule under the rules section.
+
+Append the below rule to the end of the file
+
+kubectl edit role developer -n blue
+- apiGroups:
+  - apps
+  resources:
+  - deployments
+  verbs:
+  - create
+So it looks like this:
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: developer
+  namespace: blue
+rules:
+- apiGroups:
+  - apps
+  resourceNames:
+  - dark-blue-app
+  resources:
+  - pods
+  verbs:
+  - get
+  - watch
+  - create
+  - delete
+- apiGroups:
+  - apps
+  resources:
+  - deployments
+  verbs:
+  - create
 
 
