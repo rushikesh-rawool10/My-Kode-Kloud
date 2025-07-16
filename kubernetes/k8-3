@@ -79,3 +79,18 @@ DNS Access:
 DNS is handled by the kube-dns service, which listens on port 53 for both UDP and TCP:
 
 root@controlplane:~> kubectl get svc -n kube-system
+
+=======================================================
+docker volume
+
+docker volume create data-volume
+it will create a volume in /var/lib/docker/volumes/data-volumes
+
+use docker run like below:
+docker run -v data-volume:/var/lib/mysql mysql
+
+it will create a volume if we use below command also
+docker run -v data-volume2:/var/lib/mysql mysql
+
+===bind mount===
+docker run --mount type=bind,source=/data/mysql,target=/var/lib/mysql mysql
