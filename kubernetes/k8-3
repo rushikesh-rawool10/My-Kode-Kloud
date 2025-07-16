@@ -94,3 +94,15 @@ docker run -v data-volume2:/var/lib/mysql mysql
 
 ===bind mount===
 docker run --mount type=bind,source=/data/mysql,target=/var/lib/mysql mysql
+
+
+storage drivers:
+AUFS
+ZFS
+DEVICE MAPPER
+OVERLAY
+
+Volume Drivers:
+dafault LOCAL
+AZURE FILE STORAGE
+NET APP
