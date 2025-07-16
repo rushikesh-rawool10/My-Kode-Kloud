@@ -106,3 +106,26 @@ Volume Drivers:
 dafault LOCAL
 AZURE FILE STORAGE
 NET APP
+---------------------services-------------------------
+
+ip addr show eth0
+
+The network is configured with canal. Check the canal pods logs using the command kubectl logs <canal-pod-name> -n kube-system and look for default IPv4 pool range.
+
+Or
+
+Check the kube-controller-manager.yaml manifest file and look for the --cluster-cidr parameter, which defines the IP range assigned to Pods in the cluster.
+
+cat /etc/kubernetes/manifests/kube-controller-manager.yaml   | grep cluster-cidr
+
+What is the IP Range configured for the services within the cluster?
+cat /etc/kubernetes/manifests/kube-apiserver.yaml   | grep cluster-ip-range
+
+kubectl get pods -n kube-system
+
+kubectl logs -n kube-system <kube-proxy-pod-name>
+
+How does this Kubernetes cluster ensure that a kube-proxy pod runs on all nodes in the cluster?
+
+Inspect the kube-proxy pods and try to identify how they are deployed.
+kubectl get ds -n kube-system
