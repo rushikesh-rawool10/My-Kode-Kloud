@@ -10,6 +10,10 @@ hpa comes as a default with k8s where vpa doesn't.
 
 HPA definition file, yml file
 
+--------
+kubectl top pod my-pod
+cpu and memory details
+
 If the status of the Horizontal Pod Autoscaler (HPA) target is <UNKNOWN>/80, it typically means that the HPA is unable to retrieve the current metrics for the specified target. Run kubectl describe hpa nginx-deployment to find more details.
 
 ====deployment==
@@ -86,8 +90,6 @@ kubectl describe vpa flask-app
 This will show the current state of the VPA and any recommendations it has made. If it's working properly, you should see resource recommendations (for CPU and memory) in the output.
 
 With 2 replicas, Kubernetes can safely remove one pod while keeping your application running, allowing VPA to work properly.
---------
-kubectl top pod my-pod
-cpu and memory details
+
 
 
