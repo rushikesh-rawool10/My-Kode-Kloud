@@ -1,0 +1,11 @@
+Helm works as a package manager with install and uninstall wizard also as a release manager helping us rollback and upgrade applications
+
+===installation====
+$ curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+$ chmod 700 get_helm.sh
+$ ./get_helm.sh
+
+helm version
+
+$HELM_DEBUG    -->   | indicate whether or not Helm is running in Debug mode
+
