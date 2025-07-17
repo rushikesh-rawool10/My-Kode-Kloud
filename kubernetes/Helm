@@ -9,3 +9,22 @@ helm version
 
 $HELM_DEBUG    -->   | indicate whether or not Helm is running in Debug mode
 
+helm search hub chart-name
+
+helm search hub consul | grep hashicorp
+
+helm repo add bitnami https://charts.bitnami.com/bitnami
+
+Which command is used to search for the wordpress package from the newly added bitnami repository?
+helm search repo wordpress
+
+helm repo list
+
+helm install amaze-surf bitnami/apache
+
+What version of apache did we just install on the cluster using the helm chart?
+helm list
+
+helm uninstall <release-name>
+
+helm repo remove hashicorp
