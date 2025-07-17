@@ -213,3 +213,135 @@ spec:
 
 when we delete pvc--it will be in a terminating state, because it is being used by a pod
 when we delete the pod or bya force then pvc will get deleted
+
+===storage class=====
+kubectl get sc
+
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: local-pvc
+spec:
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 500Mi
+
+---
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+  labels:
+    name: nginx
+spec:
+  containers:
+  - name: nginx
+    image: nginx:alpine
+    volumeMounts:
+      - name: local-persistent-storage
+        mountPath: /var/www/html
+  volumes:
+    - name: local-persistent-storage
+      persistentVolumeClaim:
+        claimName: local-pvc
+
+------------------
+
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: delayed-volume-sc
+provisioner: kubernetes.io/no-provisioner
+volumeBindingMode: WaitForFirstConsumer
+
+
+=================Ingress================
+kubectl get all -A
+
+kubectl get ingress --all-namespaces
+
+kubectl describe ingress --namespace app-space
+
+kubectl get deploy ingress-nginx-controller -n ingress-nginx -o yaml and look for backen service
+
+Run the command: kubectl edit ingress --namespace app-space and change the path to the video streaming application to /stream.
+
+---------
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+        nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+  creationTimestamp: "2025-07-17T06:18:52Z"
+  generation: 3
+  name: ingress-wear-watch
+  namespace: app-space
+  resourceVersion: "2711"
+  uid: 59dac3b9-9d66-4a07-a6ef-add33e39081b
+spec:
+  rules:
+  - http:
+      paths:
+      - backend:
+          service:
+            name: wear-service
+            port:
+              number: 8080
+        path: /wear
+        pathType: Prefix
+      - backend:
+          service:
+            name: video-service
+            port:
+              number: 8080
+        path: /stream
+        pathType: Prefix
+      - backend:
+          service:
+            name: food-service
+            port:
+              number: 8080
+        path: /eat
+        pathType: Prefix
+status:
+  loadBalancer:
+    ingress:
+    - ip: 172.20.215.104
+
+
+--------------------
+Create a new Ingress for the new pay application in the critical-space namespace.
+
+Use the command kubectl get svc -n critical-space to know the service and port details.
+NAME          TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
+pay-service   ClusterIP   172.20.24.137   <none>        8282/TCP   2m33
+
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: critical-ingress
+  namespace: critical-space
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /pay
+        pathType: Prefix
+        backend:
+          service:
+           name: pay-service
+           port:
+            number: 8282
+      
