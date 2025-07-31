@@ -1,5 +1,5 @@
 info
-You can list the changed files as well using the --name-only option with the git log command
+The command git log --name-only displays the commit history, and for each commit, it lists only the names of the files that were modified, added, or deleted in that specific commit.
 
 Run the command git log --name-only
 
