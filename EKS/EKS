@@ -1,0 +1,45 @@
+Prefix Delegation
+❗ The Problem Before Prefix Delegation
+
+Traditionally, each Pod in EKS gets an ENI secondary IP from the VPC subnet.
+
+Example:
+
+One EC2 node may support only max 30 Pods because it can only hold ~40 IPs per ENI.
+
+IP exhaustion often happens in large clusters.
+
+This limits pod density.
+
+✅ How Prefix Delegation Fixes It
+
+With Prefix Delegation:
+
+Instead of giving the node 20–30 individual IPs
+
+AWS gives the node an entire /28 block (16 IPs) as a single assignment.
+
+A single ENI can receive multiple prefixes.
+
+One prefix = 16 IPs
+
+Out of which:
+
+5 IPs are reserved
+
+11 usable Pod IPs
+
+If the node gets 4 prefixes, that is 44 usable Pod IPs per ENI.
+
+ENI:
+  Secondary IPs:
+    - 10.0.1.21
+    - 10.0.1.22
+    - ...
+ENI:
+  IPv4 Prefix:
+    - 10.0.2.0/28
+    - 10.0.3.0/28
+
+
+This massively increases pod density.
