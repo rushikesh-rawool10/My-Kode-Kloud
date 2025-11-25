@@ -1,0 +1,39 @@
+There is no “issue” with EBS itself, but EBS has several limitations when used with EKS — especially for StatefulSets, high availability, multi-AZ workloads, and storage scaling.
+
+Here are the real problems with EBS in EKS, the ones that DevOps/SRE engineers face in production.
+
+❗ 1. EBS Volumes Are AZ-Locked
+
+EBS volumes belong to one Availability Zone only.
+
+Why is this a problem for EKS?
+
+If a Pod with a PVC (EBS) is scheduled to another AZ, it will fail:
+
+❌ Pod stuck in ContainerCreating
+❌ Error: volume is in a different availability zone
+❌ StatefulSets cannot failover across AZs
+
+Example:
+
+EBS created in ap-south-1a
+
+Node scheduled in ap-south-1b
+
+→ PVC cannot mount.
+
+This is the biggest limitation of EBS on EKS.
+
+❗ 2. Pods With EBS Cannot Freely Move
+
+Since the EBS volume is tied to one node/AZ:
+
+Pod rescheduling takes longer
+
+If node goes down → storage downtime
+
+No automatic multi-AZ failover
+
+No cross-AZ pod migration
+
+This affects high availability.
