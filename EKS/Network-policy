@@ -1,0 +1,101 @@
+🔐 What Are Network Policies in EKS?
+
+Network Policies in Kubernetes allow you to control Pod-to-Pod and Pod-to-external traffic using Layer 3/4 firewall rules.
+
+By default, in EKS (and all Kubernetes):
+
+❗ EVERYTHING can talk to EVERYTHING
+
+Unless you apply a Network Policy.
+
+Network Policies let you restrict:
+
+Which Pods can talk to other Pods
+
+Which Namespaces can talk to others
+
+Which IPs / CIDRs can access Pods
+
+Which Ports are allowed
+
+1️⃣ Deny All Traffic to a Namespace (Zero Trust mode)
+
+By default Kubernetes allows all traffic.
+To start applying restrictive rules, first DENY all:
+
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: deny-all
+  namespace: dev
+spec:
+  podSelector: {}
+  policyTypes:
+    - Ingress
+    - Egress
+
+=======================================
+2️⃣ Allow only specific Pods to talk to a service
+
+Example: Only Pods with label role=frontend can talk to role=backend service.
+
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-frontend-to-backend
+  namespace: dev
+spec:
+  podSelector:
+    matchLabels:
+      role: backend
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              role: frontend
+      ports:
+        - protocol: TCP
+          port: 8080
+
+
+===========================================================
+
+3️⃣ Allow only traffic from a specific Namespace
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-namespace-dev
+spec:
+  podSelector:
+    matchLabels:
+      role: api
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              env: dev
+
+
+==============================================================
+
+4️⃣ Allow egress only to a specific external IP range (e.g., DB subnet)
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-egress-to-rds
+spec:
+  podSelector:
+    matchLabels:
+      app: backend
+  policyTypes:
+    - Egress
+  egress:
+    - to:
+        - ipBlock:
+            cidr: 10.10.2.0/24   # RDS subnet
+      ports:
+        - protocol: TCP
+          port: 5432
+
+
+Pods cannot access internet or any other service unless allowed.
