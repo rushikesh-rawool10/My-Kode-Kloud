@@ -1,0 +1,94 @@
+EBS CSI Driver
+EBS CSI Controller
+
+🚀 What is the EBS CSI Driver?
+
+The Amazon EBS CSI Driver is a Kubernetes CSI (Container Storage Interface) driver that lets Pods in EKS use EBS volumes as Persistent Volumes (PVs).
+
+Before the CSI driver:
+
+EKS used “in-tree” volume plugins
+
+These were deprecated and not feature-rich
+
+EBS CSI Driver is now the only supported way to use EBS with EKS.
+🧠 How the EBS CSI Driver Works
+
+You create a StorageClass that defines:
+
+volume type (gp3/gp2/io1)
+
+IOPS
+
+throughput
+
+AZ
+
+You create a PVC requesting that StorageClass.
+
+The CSI driver:
+
+Creates an EBS volume dynamically in AWS
+
+Attaches it to the EC2 node running your Pod
+
+Mounts it inside your Pod
+
+=================================
+✅ What is the EBS CSI Controller?
+
+The Amazon EBS CSI Controller is the control-plane component of the EBS CSI (Container Storage Interface) driver, responsible for managing the lifecycle of EBS volumes from the Kubernetes control plane.
+
+It runs as a Deployment (not on worker nodes) inside your cluster—typically in the namespace:kube-system or amazon-ebs-csi-driver
+
+
+📌 Responsibilities of the EBS CSI Controller
+
+The controller handles all operations that require communication with AWS APIs, such as:
+
+1. Provisioning EBS Volumes
+
+When a PVC is created, the controller:
+
+Sends API requests to AWS
+
+Creates the correct EBS volume (gp3, io1, st1…)
+
+Applies tags, size, IOPS, encryption, KMS key, etc.
+
+2. Attaching EBS Volumes to Worker Nodes
+
+Attaches the created EBS volume to the EC2 instance (node) where the pod is scheduled.
+
+Equivalent to calling:
+
+aws ec2 attach-volume
+
+3. Detaching EBS Volumes
+
+When a pod is deleted or rescheduled:
+
+The controller detaches the EBS Volume from the old node.
+
+Ensures cleanup to avoid "VolumeInUse" errors.
+
+4. Expanding (Resizing) EBS Volumes
+
+If you increase the PVC size:
+
+Controller modifies the EBS volume size
+
+Nodelocal agent expands the filesystem
+
+5. Snapshot Operations
+
+If using VolumeSnapshotClass, the controller:
+
+Creates EBS snapshots
+
+Deletes snapshots
+
+Restores PVCs from snapshots
+
+
+
