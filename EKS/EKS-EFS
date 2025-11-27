@@ -1,0 +1,82 @@
+EFS
+Multi-AZ bound in a Region
+EFS -filesystem size matters
+EBS and s3 are cheaper options
+
+========================================================================
+🚀 Amazon EFS with EKS (EFS CSI Driver)
+
+Amazon EFS (Elastic File System) is a regional, fully managed NFS filesystem.
+When used in EKS with the EFS CSI driver, it provides shared, cross-AZ persistent storage for Kubernetes workloads.
+
+✅ Why EFS is useful in EKS?
+1. Multi-AZ Storage
+
+Unlike EBS (AZ-bound), EFS works across all AZs.
+
+So your Pods can run in:
+
+AZ-a
+
+AZ-b
+
+AZ-c
+
+All can mount the same filesystem at the same time.
+
+2. Shared File Storage
+
+Multiple Pods across nodes and AZs can read/write the same directory.
+
+Perfect for:
+
+Web servers needing shared /uploads
+
+ML pipelines
+
+CI agents
+
+Shared config/data dirs
+
+3. Automatic Scaling
+
+EFS grows/shrinks automatically.
+No need to pick disk size.
+
+You pay only for actual usage.
+
+4. Managed NFS Server
+
+You don’t manage:
+
+servers
+
+capacity
+
+replication
+
+failover
+
+AWS handles it.
+
+🧩 How EFS works inside EKS (with CSI Driver)
+
+Deploy EFS CSI Driver
+(Usually via eks-addons or Helm)
+
+Create an EFS File System
+(Regional, multi-AZ)
+
+Attach mount targets in each AZ where your nodes exist
+
+Create:
+
+StorageClass
+
+PersistentVolume (static) or
+
+AccessPoint (preferred)
+
+Create PersistentVolumeClaim (PVC)
+
+Pods mount PVC and access the filesystem via NFS
